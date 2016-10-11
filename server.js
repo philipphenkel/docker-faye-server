@@ -5,7 +5,7 @@ var faye = require('faye');
 // Configuration options
 var options = {
     logging: process.env.FAYE_LOGGING || 'false',
-    listenPort: process.env.FAYE_PORT || 8000,
+    listenPort: process.env.FAYE_PORT || 8080,
     mount: process.env.FAYE_MOUNT ||  '/bayeux',
     timeout: process.env.FAYE_TIMEOUT ||  45
 };
