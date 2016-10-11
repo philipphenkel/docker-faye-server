@@ -10,5 +10,8 @@
   },
   "dependencies": {
     "faye": "1.2.2"
+  },
+  "scripts": {
+    "start": "node server.js"
   }
 }
