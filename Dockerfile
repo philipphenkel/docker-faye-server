@@ -11,6 +11,9 @@ RUN npm install
 # Bundle app source
 COPY . /usr/src/app
 
+# Expose Faye on HTTP port
 ENV FAYE_PORT 80
 EXPOSE 80
+
+# Start app
 CMD [ "npm", "start" ]
