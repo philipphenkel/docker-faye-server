@@ -25,7 +25,7 @@ if (options.logging === 'true') {
     });
 
     bayeux.on('disconnect', function(clientId) {
-        console.log('[' + new Date() + '] Client ' + clientId)+ ' disconnected';
+        console.log('[' + new Date() + '] Client ' + clientId+ ' disconnected');
     });
 
     bayeux.on('subscribe', function(clientId, channel) {
