@@ -8,7 +8,7 @@ The Docker image contains a Faye server which is based on Node.js. Faye's in-pro
 Usage
 -----
 
-By default port 80 is exposed. In order to run a server at port 8080, just call
+Faye is exposed at port 80. In order to run a server at port 8080, just call
 
 ```console
 docker run --rm -i -t -p 8080:80 henkel/docker-faye-server:latest
@@ -20,9 +20,9 @@ The server is configurable via environment variable, e.g. logging can enabled li
 docker run --rm -i -t -p 8080:80 -e FAYE_LOGGING=true henkel/docker-faye-server:latest
 ```
 
-Statistics are available via HTTP web interface at /stats
+If statistics are enabled a JSON object is accessible via HTTP
 ```console
-docker run -d -p 8080:80 -e FAYE_STATS=true henkel/docker-faye-server:latest
+docker run -d -p 8080:80 -p 1936:1936 -e FAYE_STATS=true henkel/docker-faye-server:latest
 curl 127.0.0.1:1936
 ```
 
