@@ -4,7 +4,7 @@ var faye = require('faye');
 
 // Configuration options
 var options = {
-    listenPort: process.env.FAYE_PORT || 8080,
+    port: process.env.FAYE_PORT || 8080,
     mount: process.env.FAYE_MOUNT ||  '/bayeux',
     timeout: process.env.FAYE_TIMEOUT ||  45,
     logging: process.env.FAYE_LOGGING || 'false',
@@ -81,4 +81,4 @@ if (options.stats === 'true') {
 
 var httpServer = http.createServer();
 bayeux.attach(httpServer);
-httpServer.listen(options.listenPort);
+httpServer.listen(options.port);
