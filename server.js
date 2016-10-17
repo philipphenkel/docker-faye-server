@@ -9,7 +9,6 @@ var options = {
     timeout: process.env.FAYE_TIMEOUT ||  45,
     logging: process.env.FAYE_LOGGING || 'false',
     stats: process.env.FAYE_STATS || 'false',
-    stats2: process.env.FAYE_STATS2 || 'false',
     statsPort: process.env.FAYE_STATS_PORT || 1936
 };
 
@@ -71,15 +70,14 @@ if (options.stats === 'true') {
 
 
 // Set up server
+var httpServer = http.createServer();
+bayeux.attach(httpServer);
+httpServer.listen(options.port);
 
-if (options.stats2 === 'true') {
+if (options.stats === 'true') {
     var statsServer = http.createServer(function(request, response) {
         response.writeHead(200, {'Content-Type': 'application/json'});
         response.end(JSON.stringify(statistics, null, 2));
     });
     statsServer.listen(options.statsPort);
 }
-
-var httpServer = http.createServer();
-bayeux.attach(httpServer);
-httpServer.listen(options.port);

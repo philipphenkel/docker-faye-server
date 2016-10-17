@@ -1,6 +1,6 @@
 {
   "name": "docker-faye-server",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Simple Faye Server",
   "author": "Philipp Henkel <weltraumpilot@googlemail.com>",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "url": "https://github.com/henkel/docker-faye-server"
   },
   "dependencies": {
-    "faye": "1.2.2"
+    "faye": "1.2.3"
   },
   "scripts": {
     "start": "node server.js"
