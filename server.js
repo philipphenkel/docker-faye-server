@@ -9,6 +9,7 @@ var options = {
     timeout: process.env.FAYE_TIMEOUT ||  45,
     logging: process.env.FAYE_LOGGING || 'false',
     stats: process.env.FAYE_STATS || 'false',
+    stats2: process.env.FAYE_STATS2 || 'false',
     statsPort: process.env.FAYE_STATS_PORT || 1936
 };
 
@@ -71,7 +72,7 @@ if (options.stats === 'true') {
 
 // Set up server
 
-if (options.stats === 'true') {
+if (options.stats2 === 'true') {
     var statsServer = http.createServer(function(request, response) {
         response.writeHead(200, {'Content-Type': 'application/json'});
         response.end(JSON.stringify(statistics, null, 2));
