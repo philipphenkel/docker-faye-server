@@ -2,15 +2,15 @@ let http = require('http');
 let faye = require('faye');
 
 
-let FayeServer = function(options) {
+let FayeServer = function(options = {}) {
   this.options = {
-    port: options.FAYE_PORT || 8080,
-    mount: options.FAYE_MOUNT || '/bayeux',
-    timeout: options.FAYE_TIMEOUT || 45,
-    logging: options.FAYE_LOGGING || 'false',
-    stats: options.FAYE_STATS || 'false',
-    statsPort: options.FAYE_STATS_PORT || 1936
-      //,wildcardSubscriptionOnRoot: options.FAYE_WILDCARD_SUBSCRIPTION_ON_ROOT || 'false'
+    port: options.port || options.FAYE_PORT || 8080,
+    mount: options.mount || options.FAYE_MOUNT || '/bayeux',
+    timeout: options.timeout || options.FAYE_TIMEOUT || 45,
+    logging: options.logging || options.FAYE_LOGGING || 'false',
+    stats: options.stats || options.FAYE_STATS || 'false',
+    statsPort: options.statsPort || options.FAYE_STATS_PORT || 1936,
+    wildcardSubscriptionOnRoot: options.wildcardSubscriptionOnRoot || options.FAYE_WILDCARD_SUBSCRIPTION_ON_ROOT || 'false'
   };
   this.httpServer = null;
   this.statsServer = null;
@@ -31,6 +31,20 @@ FayeServer.prototype.start = function() {
     mount: this.options.mount,
     timeout: this.options.timeout
   });
+
+  if (!(this.options.wildcardSubscriptionOnRoot === 'true')) {
+    bayeux.addExtension({
+      incoming: function(message, callback) {
+        if (message.channel === '/meta/subscribe') {
+          if (message.subscription === '/*' || message.subscription === '/**') {
+            message.error = 'Wildcard subscription on root is forbidden';
+          }
+        }
+        callback(message);
+      }
+    });
+  }
+
 
   // Log client connections + subscriptions
   if (this.options.logging === 'true') {
