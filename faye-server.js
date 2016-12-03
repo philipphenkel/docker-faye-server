@@ -1,9 +1,8 @@
-var http = require('http');
-var faye = require('faye');
+let http = require('http');
+let faye = require('faye');
 
 
-function FayeServer(options) {
-  console.log(options);
+let FayeServer = function(options) {
   this.options = {
     port: options.FAYE_PORT || 8080,
     mount: options.FAYE_MOUNT || '/bayeux',
@@ -11,6 +10,7 @@ function FayeServer(options) {
     logging: options.FAYE_LOGGING || 'false',
     stats: options.FAYE_STATS || 'false',
     statsPort: options.FAYE_STATS_PORT || 1936
+      //,wildcardSubscriptionOnRoot: options.FAYE_WILDCARD_SUBSCRIPTION_ON_ROOT || 'false'
   };
   this.httpServer = null;
   this.statsServer = null;
@@ -88,7 +88,7 @@ FayeServer.prototype.start = function() {
   this.httpServer.listen(this.options.port);
 
   if (this.options.stats === 'true') {
-    this.statsServer = http.createServer(function(request, response) {
+    this.statsServer = http.createServer((request, response) => {
       response.writeHead(200, {
         'Content-Type': 'application/json'
       });
@@ -105,7 +105,7 @@ FayeServer.prototype.stop = function() {
   }
 
   if (this.httpServer) {
-    this.httpServer.close(function() {
+    this.httpServer.close(() => {
       if (this.options.logging === 'true') {
         console.log('Faye service stopped');
       }
@@ -114,7 +114,7 @@ FayeServer.prototype.stop = function() {
   }
 
   if (this.statsServer) {
-    this.statsServer.close(function() {
+    this.statsServer.close(() => {
       if (this.options.logging === 'true') {
         console.log('Stats service stopped');
       }
