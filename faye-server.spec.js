@@ -3,12 +3,8 @@ var FayeServer = require('./faye-server');
 
 describe("Faye server", function() {
 
-  var serverOptions = {
-    FAYE_PORT: 9099
-  }
-
   it('can be started and stopped', function() {
-    var server = new FayeServer(serverOptions);
+    var server = new FayeServer();
     server.start();
     server.stop();
     server.start();
@@ -16,7 +12,7 @@ describe("Faye server", function() {
   });
 
   it('cannot be started twice', function() {
-    var server = new FayeServer(serverOptions);
+    var server = new FayeServer();
     server.start();
     expect(server.start).toThrow();
     server.stop();
@@ -31,8 +27,15 @@ describe("Faye server", function() {
       server.start();
     });
 
-    it('supports subscription to channel', function(done) {
+    it('supports subscription to a channel', function(done) {
       let subscription = client.subscribe('/channel123');
+      subscription.then(function() {
+        done();
+      });
+    });
+
+    it('supports wildcard subscription to /channel123/*', function(done) {
+      let subscription = client.subscribe('/channel123/*');
       subscription.then(function() {
         done();
       });
@@ -72,5 +75,32 @@ describe("Faye server", function() {
     });
   });
 
+  describe('with enabled wildcard subscription on root', function() {
+    let server = new FayeServer({wildcardSubscriptionOnRoot:'true'});
+    let client = null;
+
+    beforeEach(function() {
+      client = new faye.Client('http://localhost:' + server.options.port + server.options.mount);
+      server.start();
+    });
+
+    it('supports wildcard subscription on root', function(done) {
+      let subscription = client.subscribe('/*');
+      subscription.then(function() {
+        done();
+      });
+    });
+
+    it('supports recursive wildcard subscription on root', function(done) {
+      let subscription = client.subscribe('/**');
+      subscription.then(function() {
+        done();
+      });
+    });
+
+    afterEach(function() {
+      server.stop();
+    });
+  });
 
 });
