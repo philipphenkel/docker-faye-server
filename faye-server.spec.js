@@ -1,10 +1,28 @@
-var faye = require('faye');
-var FayeServer = require('./faye-server');
+let faye = require('faye');
+let FayeServer = require('./faye-server');
 
 describe("Faye server", function() {
 
+  it('can be configured', function() {
+    let nonDefaultOptions = {
+      FAYE_PORT: 9999,
+      FAYE_MOUNT: '/mount',
+      FAYE_TIMEOUT: 9999,
+      FAYE_LOGGING: 'true',
+      FAYE_STATS_PORT: 9999,
+      FAYE_WILDCARD_SUBSCRIPTION_ON_ROOT: 'true'
+    }
+    let server = new FayeServer(nonDefaultOptions);
+    expect(server.options.port).toEqual(nonDefaultOptions.FAYE_PORT);
+    expect(server.options.mount).toEqual(nonDefaultOptions.FAYE_MOUNT);
+    expect(server.options.timeout).toEqual(nonDefaultOptions.FAYE_TIMEOUT);
+    expect(server.options.logging).toEqual(nonDefaultOptions.FAYE_LOGGING);
+    expect(server.options.statsPort).toEqual(nonDefaultOptions.FAYE_STATS_PORT);
+    expect(server.options.wildcardSubscriptionOnRoot).toEqual(nonDefaultOptions.FAYE_WILDCARD_SUBSCRIPTION_ON_ROOT);
+  });
+
   it('can be started and stopped', function() {
-    var server = new FayeServer();
+    let server = new FayeServer();
     server.start();
     server.stop();
     server.start();
@@ -12,7 +30,7 @@ describe("Faye server", function() {
   });
 
   it('cannot be started twice', function() {
-    var server = new FayeServer();
+    let server = new FayeServer();
     server.start();
     expect(server.start).toThrow();
     server.stop();
