@@ -1,7 +1,7 @@
 let http = require('http');
 let faye = require('faye');
 let extensions = require('./faye-extensions');
-
+let utils = require('./faye-utils');
 
 class FayeServer {
   constructor(options = {}) {
@@ -16,6 +16,7 @@ class FayeServer {
     };
     this.httpServer = null;
     this.statsServer = null;
+    this.statistics = {};
   }
 
 
@@ -28,7 +29,6 @@ class FayeServer {
       console.log('Starting Faye server\n' + JSON.stringify(this.options, null, 2));
     }
 
-    // Configure adapter
     var bayeux = new faye.NodeAdapter({
       mount: this.options.mount,
       timeout: this.options.timeout
@@ -38,69 +38,18 @@ class FayeServer {
       bayeux.addExtension(extensions.forbidWildcardSubscriptionOnRoot);
     }
 
-
-    // Log client connections + subscriptions
     if (this.options.logging === 'true') {
-      bayeux.on('handshake', function(clientId) {
-        console.log('[' + new Date() + '] Client ' + clientId + ' connected');
-      });
-
-      bayeux.on('disconnect', function(clientId) {
-        console.log('[' + new Date() + '] Client ' + clientId + ' disconnected');
-      });
-
-      bayeux.on('subscribe', function(clientId, channel) {
-        console.log('[' + new Date() + '] Client ' + clientId + ' subscribed to ' + channel);
-      });
-
-      bayeux.on('unsubscribe', function(clientId, channel) {
-        console.log('[' + new Date() + '] Client ' + clientId + ' unsubscribed from ' + channel);
-      });
+      utils.enableLoggingOfConnections(bayeux);
+      utils.enableLoggingOfSubscriptions(bayeux);
     }
 
-
-    // Collect statistics
-    var statistics = {
-      connections: 0,
-      subscriptions: 0,
-      messages: 0
-    }
-
-    if (this.options.stats === 'true') {
-      bayeux.on('handshake', function(clientId) {
-        statistics.connections++;
-      });
-
-      bayeux.on('disconnect', function(clientId) {
-        statistics.connections--;
-      });
-
-      bayeux.on('subscribe', function(clientId, channel) {
-        statistics.subscriptions++;
-      });
-
-      bayeux.on('unsubscribe', function(clientId, channel) {
-        statistics.subscriptions--;
-      });
-
-      bayeux.on('publish', function(clientId, channel, data) {
-        statistics.messages++;
-      });
-    }
-
-
-    // Set up server
     this.httpServer = http.createServer();
     bayeux.attach(this.httpServer);
     this.httpServer.listen(this.options.port);
 
     if (this.options.stats === 'true') {
-      this.statsServer = http.createServer((request, response) => {
-        response.writeHead(200, {
-          'Content-Type': 'application/json'
-        });
-        response.end(JSON.stringify(statistics, null, 2));
-      });
+      utils.enableStatistics(bayeux, this.statistics);
+      this.statsServer = http.createServer(utils.statisticsRequestListener(this.statistics)); 
       this.statsServer.listen(this.options.statsPort);
     }
   };
