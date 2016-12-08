@@ -1,6 +1,6 @@
 {
   "name": "docker-faye-server",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Simple Faye Server",
   "author": "Philipp Henkel <weltraumpilot@googlemail.com>",
   "license": "MIT",
