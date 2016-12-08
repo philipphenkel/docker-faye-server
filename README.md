@@ -39,7 +39,7 @@ Environment Variables
 
 `FAYE_STATS_PORT` - The port at which statistics are served via HTTP. `1936` by default.
 
-
+`FAYE_WILDCARD_SUBSCRIPTION_ON_ROOT` - Enables wildcard subscriptions on root. For privacy reasons `false` by default.
 
 License
 -------
