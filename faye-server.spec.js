@@ -3,6 +3,21 @@ let FayeServer = require('./faye-server');
 
 describe("Faye server", function() {
 
+  it('can be started and stopped', function() {
+    let server = new FayeServer();
+    server.start();
+    server.stop();
+    server.start();
+    server.stop();
+  });
+
+  it('cannot be started twice', function() {
+    let server = new FayeServer();
+    server.start();
+    expect(server.start).toThrow();
+    server.stop();
+  });
+
   it('can be configured', function() {
     let nonDefaultOptions = {
       FAYE_PORT: 9998,
@@ -21,20 +36,7 @@ describe("Faye server", function() {
     expect(server.options.stats).toEqual(nonDefaultOptions.FAYE_STATS);
     expect(server.options.statsPort).toEqual(nonDefaultOptions.FAYE_STATS_PORT);
     expect(server.options.wildcardSubscriptionOnRoot).toEqual(nonDefaultOptions.FAYE_WILDCARD_SUBSCRIPTION_ON_ROOT);
-  });
-
-  it('can be started and stopped', function() {
-    let server = new FayeServer();
     server.start();
-    server.stop();
-    server.start();
-    server.stop();
-  });
-
-  it('cannot be started twice', function() {
-    let server = new FayeServer();
-    server.start();
-    expect(server.start).toThrow();
     server.stop();
   });
 
@@ -95,7 +97,7 @@ describe("Faye server", function() {
     });
   });
 
-  describe('with enabled wildcard subscription on root', function() {
+  describe('with wildcard subscription on root enabled', function() {
     let server = new FayeServer({
       wildcardSubscriptionOnRoot: 'true'
     });
