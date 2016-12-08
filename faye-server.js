@@ -1,5 +1,6 @@
 let http = require('http');
 let faye = require('faye');
+let extensions = require('./faye-extensions');
 
 
 class FayeServer {
@@ -34,16 +35,7 @@ class FayeServer {
     });
 
     if (!(this.options.wildcardSubscriptionOnRoot === 'true')) {
-      bayeux.addExtension({
-        incoming: function(message, callback) {
-          if (message.channel === '/meta/subscribe') {
-            if (message.subscription === '/*' || message.subscription === '/**') {
-              message.error = 'Wildcard subscription on root is forbidden';
-            }
-          }
-          callback(message);
-        }
-      });
+      bayeux.addExtension(extensions.forbidWildcardSubscriptionOnRoot);
     }
 
 
