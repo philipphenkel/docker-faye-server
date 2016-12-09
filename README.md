@@ -1,4 +1,4 @@
-Faye Server
+Faye Server [![Build Status](https://travis-ci.org/henkel/docker-faye-server.svg?branch=master)](https://travis-ci.org/henkel/docker-faye-server)
 ===========
 
 Faye is a publish-subscribe messaging system based on the Bayeux protocol. It is designed to allow client-side JavaScript programs to send messages to each other with low latency over HTTP.

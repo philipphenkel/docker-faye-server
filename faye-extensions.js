@@ -1,4 +1,3 @@
-
 let forbidWildcardSubscriptionOnRoot = {
   incoming: function(message, callback) {
     if (message.channel === '/meta/subscribe') {
