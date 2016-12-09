@@ -3,10 +3,21 @@ Faye Server [![Build Status](https://travis-ci.org/henkel/docker-faye-server.svg
 
 Faye is a publish-subscribe messaging system based on the Bayeux protocol. It is designed to allow client-side JavaScript programs to send messages to each other with low latency over HTTP.
 
-The Docker image contains a Faye server which is based on Node.js. Faye's in-process memory engine is used to store the state.
+This project provides a Faye server which is based on Node.js and a corresponding Docker container. Faye's in-process memory engine is used to store the state.
 
-Usage
------
+Direct Usage
+------------
+Start a server with default configuration at port 8080 with just two commands:
+
+```console
+npm install
+npm start
+```
+
+Several configuration options are supported via the environment variables listed below.
+
+Docker Usage
+------------
 
 Faye is exposed at port 80. In order to run a server at port 8080, just call
 
