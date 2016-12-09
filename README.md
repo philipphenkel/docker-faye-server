@@ -7,7 +7,7 @@ This project provides a Faye server which is based on Node.js and a correspondin
 
 Direct Usage
 ------------
-Start a server with default configuration at port 8080 with just two commands:
+Start a server at port 8080 with the following two commands
 
 ```console
 npm install
