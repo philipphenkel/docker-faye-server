@@ -1,5 +1,5 @@
 let forbidWildcardSubscriptionOnRoot = {
-  incoming: function(message, callback) {
+  incoming: (message, callback) => {
     if (message.channel === '/meta/subscribe') {
       if (message.subscription === '/*' || message.subscription === '/**') {
         message.error = 'Wildcard subscription on root is forbidden';
