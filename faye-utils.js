@@ -1,4 +1,4 @@
-let enableLoggingOfConnections = (bayeux) => {
+const enableLoggingOfConnections = (bayeux) => {
 
   bayeux.on('handshake', (clientId) => {
     console.log('[' + new Date() + '] Client ' + clientId + ' connected');
@@ -9,7 +9,7 @@ let enableLoggingOfConnections = (bayeux) => {
   });
 }
 
-let enableLoggingOfSubscriptions = (bayeux) => {
+const enableLoggingOfSubscriptions = (bayeux) => {
 
   bayeux.on('subscribe', (clientId, channel) => {
     console.log('[' + new Date() + '] Client ' + clientId + ' subscribed to ' + channel);
@@ -20,7 +20,7 @@ let enableLoggingOfSubscriptions = (bayeux) => {
   });
 }
 
-let enableStatistics = (bayeux, statistics) => {
+const enableStatistics = (bayeux, statistics) => {
 
   statistics.connections = 0;
   statistics.subscriptions = 0;
@@ -33,7 +33,7 @@ let enableStatistics = (bayeux, statistics) => {
   bayeux.on('publish', (clientId, channel, data) => statistics.messages++);
 }
 
-let statisticsRequestListener = (statistics) => {
+const statisticsRequestListener = (statistics) => {
   return (request, response) => {
     response.writeHead(200, {
       'Content-Type': 'application/json'

@@ -1,7 +1,7 @@
-let http = require('http');
-let faye = require('faye');
-let extensions = require('./faye-extensions');
-let utils = require('./faye-utils');
+const http = require('http');
+const faye = require('faye');
+const extensions = require('./faye-extensions');
+const utils = require('./faye-utils');
 
 class FayeServer {
   constructor(options = {}) {
@@ -49,7 +49,7 @@ class FayeServer {
 
     if (this.options.stats === 'true') {
       utils.enableStatistics(bayeux, this.statistics);
-      this.statsServer = http.createServer(utils.statisticsRequestListener(this.statistics)); 
+      this.statsServer = http.createServer(utils.statisticsRequestListener(this.statistics));
       this.statsServer.listen(this.options.statsPort);
     }
   };

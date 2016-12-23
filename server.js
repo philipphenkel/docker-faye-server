@@ -1,2 +1,2 @@
-let FayeServer = require('./faye-server');
+const FayeServer = require('./faye-server');
 new FayeServer(process.env).start();

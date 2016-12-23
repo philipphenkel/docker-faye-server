@@ -1,4 +1,4 @@
-let forbidWildcardSubscriptionOnRoot = {
+const forbidWildcardSubscriptionOnRoot = {
   incoming: (message, callback) => {
     if (message.channel === '/meta/subscribe') {
       if (message.subscription === '/*' || message.subscription === '/**') {
