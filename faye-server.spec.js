@@ -1,10 +1,10 @@
-let faye = require('faye');
-let FayeServer = require('./faye-server');
+const faye = require('faye');
+const FayeServer = require('./faye-server');
 
 describe("Faye server", () => {
 
   it('can be started and stopped', () => {
-    let server = new FayeServer();
+    const server = new FayeServer();
     server.start();
     server.stop();
     server.start();
@@ -12,14 +12,14 @@ describe("Faye server", () => {
   });
 
   it('cannot be started twice', () => {
-    let server = new FayeServer();
+    const server = new FayeServer();
     server.start();
     expect(server.start).toThrow();
     server.stop();
   });
 
   it('can be configured', () => {
-    let nonDefaultOptions = {
+    const nonDefaultOptions = {
       FAYE_PORT: 9998,
       FAYE_MOUNT: '/mount',
       FAYE_TIMEOUT: 1000,
@@ -28,7 +28,7 @@ describe("Faye server", () => {
       FAYE_STATS_PORT: 9999,
       FAYE_WILDCARD_SUBSCRIPTION_ON_ROOT: 'true'
     }
-    let server = new FayeServer(nonDefaultOptions);
+    const server = new FayeServer(nonDefaultOptions);
     expect(server.options.port).toEqual(nonDefaultOptions.FAYE_PORT);
     expect(server.options.mount).toEqual(nonDefaultOptions.FAYE_MOUNT);
     expect(server.options.timeout).toEqual(nonDefaultOptions.FAYE_TIMEOUT);
@@ -41,7 +41,7 @@ describe("Faye server", () => {
   });
 
   describe('with default options', () => {
-    let server = new FayeServer();
+    const server = new FayeServer();
     let client = null;
 
     beforeEach(() => {
@@ -50,24 +50,24 @@ describe("Faye server", () => {
     });
 
     it('supports subscription to a channel', (done) => {
-      let subscription = client.subscribe('/channel123');
+      const subscription = client.subscribe('/channel123');
       subscription.then(() => done());
     });
 
     it('supports wildcard subscription to /channel123/*', (done) => {
-      let subscription = client.subscribe('/channel123/*');
+      const subscription = client.subscribe('/channel123/*');
       subscription.then(() => done());
     });
 
     it('supports publication of a message', (done) => {
-      let publication = client.publish('/channel123', {
+      const publication = client.publish('/channel123', {
         text: 'Hello, World!'
       });
       publication.then(() => done());
     });
 
     it('forbids wildcard subscription on root', (done) => {
-      let subscription = client.subscribe('/*');
+      const subscription = client.subscribe('/*');
       subscription.then(() => {
         fail('wildcard subscription on root shall not be allowed');
         done();
@@ -75,7 +75,7 @@ describe("Faye server", () => {
     });
 
     it('forbids recursive wildcard subscription on root', (done) => {
-      let subscription = client.subscribe('/**');
+      const subscription = client.subscribe('/**');
       subscription.then(() => {
         fail('recursive wildcard subscription on root shall not be allowed');
         done();
@@ -86,10 +86,10 @@ describe("Faye server", () => {
   });
 
   describe('with wildcard subscription on root enabled', () => {
-    let server = new FayeServer({
+    client = null;
+    const server = new FayeServer({
       wildcardSubscriptionOnRoot: 'true'
     });
-    let client = null;
 
     beforeEach(() => {
       client = new faye.Client('http://localhost:' + server.options.port + server.options.mount);
@@ -97,12 +97,12 @@ describe("Faye server", () => {
     });
 
     it('supports wildcard subscription on root', (done) => {
-      let subscription = client.subscribe('/*');
+      const subscription = client.subscribe('/*');
       subscription.then(() => done());
     });
 
     it('supports recursive wildcard subscription on root', (done) => {
-      let subscription = client.subscribe('/**');
+      const subscription = client.subscribe('/**');
       subscription.then(() => done());
     });
 
@@ -111,7 +111,7 @@ describe("Faye server", () => {
 
 
   describe('with statistics enabled', () => {
-    let server = new FayeServer({
+    const server = new FayeServer({
       stats: 'true'
     });
 
@@ -119,8 +119,8 @@ describe("Faye server", () => {
 
     it('tracks connections', (done) => {
       expect(server.statistics.connections).toEqual(0);
-      let client = new faye.Client('http://localhost:' + server.options.port + server.options.mount);
-      let subscription = client.subscribe('/123');
+      const client = new faye.Client('http://localhost:' + server.options.port + server.options.mount);
+      const subscription = client.subscribe('/123');
       subscription.then(() => {
         expect(server.statistics.connections).toEqual(1);
         done();
@@ -129,8 +129,8 @@ describe("Faye server", () => {
 
     it('tracks subscriptions', (done) => {
       expect(server.statistics.subscriptions).toEqual(0);
-      let client = new faye.Client('http://localhost:' + server.options.port + server.options.mount);
-      let subscription = client.subscribe('/channel123');
+      const client = new faye.Client('http://localhost:' + server.options.port + server.options.mount);
+      const subscription = client.subscribe('/channel123');
       subscription.then(() => {
         expect(server.statistics.subscriptions).toEqual(1);
         done();
@@ -139,8 +139,8 @@ describe("Faye server", () => {
 
     it('tracks messages', (done) => {
       expect(server.statistics.messages).toEqual(0);
-      let client = new faye.Client('http://localhost:' + server.options.port + server.options.mount);
-      let publication = client.publish('/channel123', {
+      const client = new faye.Client('http://localhost:' + server.options.port + server.options.mount);
+      const publication = client.publish('/channel123', {
         text: 'Hello, World!'
       });
       publication.then(() => {
