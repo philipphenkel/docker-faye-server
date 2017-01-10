@@ -20,6 +20,12 @@ const enableLoggingOfSubscriptions = (bayeux) => {
   });
 }
 
+const enableLoggingOfPublications = (bayeux) => {
+  bayeux.on('publish', (clientId, channel, data) => {
+    console.log('[' + new Date() + '] Client ' + clientId + ' published ' + JSON.stringify(data) + ' to ' + channel);
+  });
+}
+
 const enableStatistics = (bayeux, statistics) => {
 
   statistics.connections = 0;
@@ -45,6 +51,7 @@ const statisticsRequestListener = (statistics) => {
 module.exports = {
   enableLoggingOfConnections,
   enableLoggingOfSubscriptions,
+  enableLoggingOfPublications,
   enableStatistics,
   statisticsRequestListener
 };

@@ -23,7 +23,7 @@ describe("Faye server", () => {
       FAYE_PORT: 9998,
       FAYE_MOUNT: '/mount',
       FAYE_TIMEOUT: 1000,
-      FAYE_LOGGING: 'true',
+      FAYE_LOG_LEVEL: 2,
       FAYE_STATS: 'true',
       FAYE_STATS_PORT: 9999,
       FAYE_WILDCARD_SUBSCRIPTION_ON_ROOT: 'true'
@@ -32,7 +32,7 @@ describe("Faye server", () => {
     expect(server.options.port).toEqual(nonDefaultOptions.FAYE_PORT);
     expect(server.options.mount).toEqual(nonDefaultOptions.FAYE_MOUNT);
     expect(server.options.timeout).toEqual(nonDefaultOptions.FAYE_TIMEOUT);
-    expect(server.options.logging).toEqual(nonDefaultOptions.FAYE_LOGGING);
+    expect(server.options.logLevel).toEqual(nonDefaultOptions.FAYE_LOG_LEVEL);
     expect(server.options.stats).toEqual(nonDefaultOptions.FAYE_STATS);
     expect(server.options.statsPort).toEqual(nonDefaultOptions.FAYE_STATS_PORT);
     expect(server.options.wildcardSubscriptionOnRoot).toEqual(nonDefaultOptions.FAYE_WILDCARD_SUBSCRIPTION_ON_ROOT);

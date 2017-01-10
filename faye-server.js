@@ -9,7 +9,7 @@ class FayeServer {
       port: options.port || options.FAYE_PORT || 8080,
       mount: options.mount || options.FAYE_MOUNT || '/bayeux',
       timeout: options.timeout || options.FAYE_TIMEOUT || 45,
-      logging: options.logging || options.FAYE_LOGGING || 'false',
+      logLevel: options.logLevel || options.FAYE_LOG_LEVEL || 0,
       stats: options.stats || options.FAYE_STATS || 'false',
       statsPort: options.statsPort || options.FAYE_STATS_PORT || 1936,
       wildcardSubscriptionOnRoot: options.wildcardSubscriptionOnRoot || options.FAYE_WILDCARD_SUBSCRIPTION_ON_ROOT || 'false'
@@ -25,7 +25,7 @@ class FayeServer {
       throw new Error('Server is already running on port ' + this.options.port);
     }
 
-    if (this.options.logging === 'true') {
+    if (this.options.logLevel >= 1) {
       console.log('Starting Faye server\n' + JSON.stringify(this.options, null, 2));
     }
 
@@ -38,9 +38,13 @@ class FayeServer {
       bayeux.addExtension(extensions.forbidWildcardSubscriptionOnRoot);
     }
 
-    if (this.options.logging === 'true') {
+    if (this.options.logLevel >= 1) {
       utils.enableLoggingOfConnections(bayeux);
       utils.enableLoggingOfSubscriptions(bayeux);
+    }
+
+    if (this.options.logLevel >= 2) {
+      utils.enableLoggingOfPublications(bayeux);
     }
 
     this.httpServer = http.createServer();
@@ -56,13 +60,13 @@ class FayeServer {
 
 
   stop() {
-    if (this.options.logging === 'true') {
+    if (this.options.logLevel >= 1) {
       console.log('Stopping server at port ' + this.options.port);
     }
 
     if (this.httpServer) {
       this.httpServer.close(() => {
-        if (this.options.logging === 'true') {
+        if (this.options.logLevel >= 1) {
           console.log('Faye service stopped');
         }
       });
@@ -71,7 +75,7 @@ class FayeServer {
 
     if (this.statsServer) {
       this.statsServer.close(() => {
-        if (this.options.logging === 'true') {
+        if (this.options.logLevel >= 1) {
           console.log('Stats service stopped');
         }
       });

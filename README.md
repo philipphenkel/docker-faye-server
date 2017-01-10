@@ -41,9 +41,9 @@ Environment Variables
 ---------------------
 Variable | Description
 -------- | -----------
-`FAYE_MOUNT` | The path on the host at which the Faye service is provided. The default value is /bayeux and clients would have to connect to `http://host:port/bayeux`. The server will handle any request whose path begins with the mount path; this is so that it can interoperate with clients that use different request paths for different channels.
+`FAYE_MOUNT` | The path on the host at which the Faye service is provided. The default value is `/bayeux` and clients would have to connect to `http://host:port/bayeux`. The server will handle any request whose path begins with the mount path; this is so that it can interoperate with clients that use different request paths for different channels.
 `FAYE_TIMEOUT` | The maximum time to hold a connection open before returning the response. This is given in seconds and must be smaller than the timeout on your web front-end. Default timeout is 45 seconds.
-`FAYE_LOGGING` | If set to `true` connections and subscriptions will be logged. `false` by default.
+`FAYE_LOG_LEVEL` | If set to `1` connections and subscriptions will be logged. If set to `2` all published messages will be logged in addition. `0` by default.
 `FAYE_STATS` | If set to `true` statistics provided at `http://host:FAYE_STATS_PORT`. `false` by default.
 `FAYE_STATS_PORT` | The port at which statistics are served via HTTP. `1936` by default.
 `FAYE_WILDCARD_SUBSCRIPTION_ON_ROOT` | Enables wildcard subscriptions on root. For privacy reasons `false` by default.
