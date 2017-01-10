@@ -25,10 +25,10 @@ Faye is exposed at port 80. In order to run a server at port 8080, just call
 docker run --rm -i -t -p 8080:80 henkel/docker-faye-server:latest
 ```
 
-The server is configurable via environment variables, e.g. logging can be enabled like this
+The server is configurable via environment variables, e.g. verbose logging can be enabled like this
 
 ```console
-docker run --rm -i -t -p 8080:80 -e FAYE_LOGGING=true henkel/docker-faye-server:latest
+docker run --rm -i -t -p 8080:80 -e FAYE_LOG_LEVEL=2 henkel/docker-faye-server:latest
 ```
 
 If statistics are enabled a JSON object is accessible via HTTP
