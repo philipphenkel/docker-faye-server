@@ -9,7 +9,7 @@
     "url": "https://github.com/henkel/docker-faye-server"
   },
   "dependencies": {
-    "faye": "1.2.3"
+    "faye": "1.2.4"
   },
   "scripts": {
     "start": "node server.js",
