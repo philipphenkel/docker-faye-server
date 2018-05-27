@@ -6,13 +6,13 @@ const utils = require('./faye-utils');
 class FayeServer {
   constructor(options = {}) {
     this.options = {
-      port: options.port || options.FAYE_PORT || 8080,
-      mount: options.mount || options.FAYE_MOUNT || '/bayeux',
-      timeout: options.timeout || options.FAYE_TIMEOUT || 45,
-      logLevel: options.logLevel || options.FAYE_LOG_LEVEL || 0,
-      stats: options.stats || options.FAYE_STATS || 'false',
-      statsPort: options.statsPort || options.FAYE_STATS_PORT || 1936,
-      wildcardSubscriptionOnRoot: options.wildcardSubscriptionOnRoot || options.FAYE_WILDCARD_SUBSCRIPTION_ON_ROOT || 'false'
+      FAYE_PORT: options.FAYE_PORT || 8080,
+      FAYE_MOUNT: options.FAYE_MOUNT || '/bayeux',
+      FAYE_TIMEOUT: options.FAYE_TIMEOUT || 45,
+      FAYE_LOG_LEVEL: options.FAYE_LOG_LEVEL || 0,
+      FAYE_STATS: options.FAYE_STATS || 'false',
+      FAYE_STATS_PORT: options.FAYE_STATS_PORT || 1936,
+      FAYE_WILDCARD_SUBSCRIPTION_ON_ROOT: options.FAYE_WILDCARD_SUBSCRIPTION_ON_ROOT || 'false'
     };
     this.httpServer = null;
     this.statsServer = null;
@@ -22,51 +22,51 @@ class FayeServer {
 
   start() {
     if (this.httpServer) {
-      throw new Error('Server is already running on port ' + this.options.port);
+      throw new Error('Server is already running on port ' + this.options.FAYE_PORT);
     }
 
-    if (this.options.logLevel >= 1) {
+    if (this.options.FAYE_LOG_LEVEL >= 1) {
       console.log('Starting Faye server\n' + JSON.stringify(this.options, null, 2));
     }
 
     var bayeux = new faye.NodeAdapter({
-      mount: this.options.mount,
-      timeout: this.options.timeout
+      mount: this.options.FAYE_MOUNT,
+      timeout: this.options.FAYE_TIMEOUT
     });
 
-    if (!(this.options.wildcardSubscriptionOnRoot === 'true')) {
+    if (!(this.options.FAYE_WILDCARD_SUBSCRIPTION_ON_ROOT === 'true')) {
       bayeux.addExtension(extensions.forbidWildcardSubscriptionOnRoot);
     }
 
-    if (this.options.logLevel >= 1) {
+    if (this.options.FAYE_LOG_LEVEL >= 1) {
       utils.enableLoggingOfConnections(bayeux);
       utils.enableLoggingOfSubscriptions(bayeux);
     }
 
-    if (this.options.logLevel >= 2) {
+    if (this.options.FAYE_LOG_LEVEL >= 2) {
       utils.enableLoggingOfPublications(bayeux);
     }
 
     this.httpServer = http.createServer();
     bayeux.attach(this.httpServer);
-    this.httpServer.listen(this.options.port);
+    this.httpServer.listen(this.options.FAYE_PORT);
 
-    if (this.options.stats === 'true') {
+    if (this.options.FAYE_STATS === 'true') {
       utils.enableStatistics(bayeux, this.statistics);
       this.statsServer = http.createServer(utils.statisticsRequestListener(this.statistics));
-      this.statsServer.listen(this.options.statsPort);
+      this.statsServer.listen(this.options.FAYE_STATS_PORT);
     }
   };
 
 
   stop() {
-    if (this.options.logLevel >= 1) {
-      console.log('Stopping server at port ' + this.options.port);
+    if (this.options.FAYE_LOG_LEVEL >= 1) {
+      console.log('Stopping server at port ' + this.options.FAYE_PORT);
     }
 
     if (this.httpServer) {
       this.httpServer.close(() => {
-        if (this.options.logLevel >= 1) {
+        if (this.options.FAYE_LOG_LEVEL >= 1) {
           console.log('Faye service stopped');
         }
       });
@@ -75,7 +75,7 @@ class FayeServer {
 
     if (this.statsServer) {
       this.statsServer.close(() => {
-        if (this.options.logLevel >= 1) {
+        if (this.options.FAYE_LOG_LEVEL >= 1) {
           console.log('Stats service stopped');
         }
       });
