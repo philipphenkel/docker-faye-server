@@ -19,16 +19,16 @@ Several configuration options are supported via the environment variables listed
 Docker Usage
 ------------
 
-Faye is exposed at port 80. In order to run a server at port 8080, just call
+Faye is exposed at container port 8080. In order to run a server at host port 80, just call
 
 ```console
-docker run --rm -i -t -p 8080:80 henkel/docker-faye-server:latest
+docker run --rm -i -t -p 80:8080 henkel/docker-faye-server:latest
 ```
 
 The server is configurable via environment variables, e.g. verbose logging can be enabled like this
 
 ```console
-docker run --rm -i -t -p 8080:80 -e FAYE_LOG_LEVEL=2 henkel/docker-faye-server:latest
+docker run --rm -i -t -p 80:8080 -e FAYE_LOG_LEVEL=2 henkel/docker-faye-server:latest
 ```
 
 If statistics are enabled a JSON object is accessible via HTTP
@@ -41,6 +41,7 @@ Environment Variables
 ---------------------
 Variable | Description
 -------- | -----------
+`FAYE_PORT` | The port at which Faye is exposed. `8080` by default.
 `FAYE_MOUNT` | The path on the host at which the Faye service is provided. The default value is `/bayeux` and clients would have to connect to `http://host:port/bayeux`. The server will handle any request whose path begins with the mount path; this is so that it can interoperate with clients that use different request paths for different channels.
 `FAYE_TIMEOUT` | The maximum time to hold a connection open before returning the response. This is given in seconds and must be smaller than the timeout on your web front-end. Default timeout is 45 seconds.
 `FAYE_LOG_LEVEL` | If set to `1` connections and subscriptions will be logged. If set to `2` all published messages will be logged in addition. `0` by default.
